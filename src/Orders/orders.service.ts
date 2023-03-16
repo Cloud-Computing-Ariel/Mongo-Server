@@ -48,7 +48,15 @@ export class OrdersService {
     }
   }
 
-  // TOCHECK
+  async insertOneOrder(order: Order) {
+    return await this.insertOrder(
+        order.restruantID, 
+        order.orderID, 
+        order.toppings,
+        order.date,
+        order.status)
+  }
+
   async getOrderBetween(start: Date, end: Date){
     const result = await this.orderModel.find({
         date: {
