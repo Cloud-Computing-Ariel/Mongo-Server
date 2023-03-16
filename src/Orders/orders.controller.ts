@@ -1,22 +1,37 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { AppController } from './or.controller';
-// import { AppService } from './orders.service';
+import { Controller, Get, Query, Post, Body, Param, Patch} from '@nestjs/common';
+import { OrdersService } from './orders.service';
 
-// describe('AppController', () => {
-//   let appController: AppController;
+@Controller('order')
+export class OrderController {
 
-//   beforeEach(async () => {
-//     const app: TestingModule = await Test.createTestingModule({
-//       controllers: [AppController],
-//       providers: [AppService],
-//     }).compile();
+  constructor(private readonly orderService: OrdersService) {};
 
-//     appController = app.get<AppController>(AppController);
-//   });
+  @Post()
+  async addOrder(
+    @Body('restruantID') restruantID: number,
+    @Body('orderID') orderID: number,
+    @Body('toppings') toppings: string[],
+    @Body('date') date: string,
+    @Body('status') status: string,
+  ) {
+    const newOrderId = await this.orderService.insertOrder(
+      restruantID, 
+      orderID, 
+      toppings,
+      new Date(date),
+      status
+    );
+    return newOrderId;
+  }
 
-//   describe('root', () => {
-//     it('should return "Hello World!"', () => {
-//       expect(appController.getHello()).toBe('Hello World!');
-//     });
-//   });
-// });
+  @Get()
+  async getOrders(
+    @Query('start') start: string,
+    @Query('end') end: string)
+    {
+      return await this.orderService.getOrderBetween(
+        new Date(start),
+        new Date(end));
+    }
+    // example for query: http://localhost:3000/order?start=2020-03-30&end=2020-03-30
+}

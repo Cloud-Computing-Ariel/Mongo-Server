@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RestaurantSchema } from './restaurant.model';
-import { RestaurantService } from './restaurant.service';
-import { RestaurantController } from './restaurant.controller';
+import { RestaurantService } from './restaurants.service';
+import { RestaurantController } from './restaurants.controller';
 
 @Module({
   imports: [

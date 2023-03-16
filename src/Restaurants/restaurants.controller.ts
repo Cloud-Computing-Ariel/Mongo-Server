@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Param, Patch} from '@nestjs/common';
-import { RestaurantService} from './restaurant.service';
+import { RestaurantService} from './restaurants.service';
 
 @Controller('restaurant')
 export class RestaurantController {
