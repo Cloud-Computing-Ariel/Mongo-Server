@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { ConsumerService } from './consumer.service';
-import { OrdersService } from '../Orders/orders.service';
-import { Order } from '../Orders/order.model';
+import { ConsumerService } from './kafka/consumer.service';
+import { OrdersService } from './Orders/orders.service';
+import { Order } from './Orders/order.model';
 
 import * as mongoose from 'mongoose';
 const OrderModel = mongoose.model<Order>('newOrder', new mongoose.Schema<Order>({}));
