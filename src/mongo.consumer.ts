@@ -1,13 +1,12 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConsumerService } from './kafka/consumer.service';
-import { OrdersService } from './Orders/orders.service';
 import { Order } from './Orders/order.model';
-
-
-import * as mongoose from 'mongoose';
 import { AppService } from './app.service';
-import { Console } from 'console';
-const OrderModel = mongoose.model<Order>('newOrders', new mongoose.Schema<Order>({}));
+
+// import { OrdersService } from './Orders/orders.service';
+// import * as mongoose from 'mongoose';
+
+// const OrderModel = mongoose.model<Order>('newOrders', new mongoose.Schema<Order>({}));
 
 @Injectable()
 export class MongoConsumer implements OnModuleInit {
@@ -17,9 +16,6 @@ export class MongoConsumer implements OnModuleInit {
   ) {}
 
   newOrder:Partial<Order>={};
-
-
-
 
   async onModuleInit() {
     await this.consumerService.consume(
@@ -31,43 +27,39 @@ export class MongoConsumer implements OnModuleInit {
       {
         eachMessage: async ({ topic, message }) => {
           if (topic == 'order-status-change') {
+            console.log('order status change');
             const temp = message.value.toString();
             const myObject = JSON.parse(temp);
-            const myArray = Object.values(myObject);
+            const allObj = Object.values(myObject);
 
-            const restID = Number.parseInt(myArray[0].toString());
-            const orderID = Number.parseInt(myArray[1].toString());
-            const status = myArray[2].toString();
-            console.log(restID)
-            console.log(orderID)
-            console.log(status)
-
+            const restID = Number.parseInt(allObj[0].toString());
+            const orderID = Number.parseInt(allObj[1].toString());
+            const status = allObj[2].toString();
             this.orderService.updateOrderStatus(restID, orderID, status);
-          } else if (topic == 'new-order') {
-            
+          } 
+          else if (topic == 'new-order') {
+            console.log('new order arrived');
 
             const temp = message.value.toString();
             const myObject = JSON.parse(temp);
-            const myArray = Object.values(myObject);
-            const extractOrder = Object.values(myArray[3]);
-            //console.log(extractOrder)
-          
+            const allObj = Object.values(myObject);
+            const orderObj = Object.values(allObj[3]);
 
-
-
-             this.newOrder=
+            this.newOrder=
             {
-              restruantID: Number.parseInt(myArray[0].toString()),
-                orderID: Number.parseInt(extractOrder[0].toString()),
-                status: extractOrder[1].toString(),
+              restruantID: Number.parseInt(allObj[0].toString()),
+                orderID: Number.parseInt(orderObj[0].toString()),
+                status: orderObj[1].toString(),
                 date: new Date(),
-                toppings: extractOrder[3].toString(),
+                toppings: orderObj[3].toString(),
               }; 
 
-
-           
-              
-            this.orderService.insertOrder(this.newOrder.restruantID,this.newOrder.orderID,this.newOrder.toppings,this.newOrder.date,this.newOrder.status);
+            this.orderService.insertOrder(
+              this.newOrder.restruantID,
+              this.newOrder.orderID,
+              this.newOrder.toppings,
+              this.newOrder.date,
+              this.newOrder.status);
           }
         },
       },

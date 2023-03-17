@@ -5,10 +5,6 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class AppService {
-  // getHello(): string {
-  //   return 'Hello World!';
-  // }
-
   constructor(
     @InjectModel('newOrders') 
     private readonly orderModel: Model<Order>) {};
