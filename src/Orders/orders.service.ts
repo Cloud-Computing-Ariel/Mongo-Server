@@ -17,22 +17,8 @@ export class OrdersService {
     status: string
     ) { try {
         // the combination of restruantID & orderID is unique
-        const oldOrder = await this.findOrder(restruantID, orderID);
-        if (oldOrder.status == 'open' && status == 'close') {
-            oldOrder.status = status;
-            oldOrder.save();
-            return oldOrder;
-        }
-        if (oldOrder.status == 'close' && status == 'open') {
-            console.log('Reopen restaurantID: ', restruantID, 'orderID: ', orderID)
-            oldOrder.date = date;
-            oldOrder.status = status;
-            oldOrder.save();
-            return oldOrder;
-        }
-        else {
-            return { message: "The order is already closed" };
-        }
+        await this.findOrder(restruantID, orderID);
+        return { message: `The order with: restruantID=${restruantID}, orderID=${orderID} already exist` };
     }
     catch (error){
         const newRest = new this.orderModel({ 
@@ -48,13 +34,32 @@ export class OrdersService {
     }
   }
 
-  async insertOneOrder(order: Order) {
+  async insertNewOrder(order: Order){
     return await this.insertOrder(
-        order.restruantID, 
-        order.orderID, 
-        order.toppings,
-        order.date,
-        order.status)
+      order.restruantID,
+      order.orderID,
+      order.toppings,
+      order.date,
+      order.status
+    );
+  }
+
+  async updateOrderStatus(
+    restruantID: number, orderID: number, status: string) {
+      try {
+        if (status == 'close') {
+          const updatedOrder = await this.findOrder(restruantID, orderID);
+          updatedOrder.status = status;
+          updatedOrder.save();
+          return updatedOrder;
+        }
+        else {
+          return { message: "Can only close order" };
+        }
+    }
+    catch (error){
+      return { message: `Can't find rest restruantID: ${restruantID}, orderID: ${orderID}`};
+    }
   }
 
   async getOrderBetween(start: Date, end: Date){
