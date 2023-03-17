@@ -51,7 +51,7 @@ export class AppService {
   async updateOrderStatus(
     restruantID: number, orderID: number, status: string) {
       try {
-        if (status == 'close') {
+        if (status == 'closed') {
           const updatedOrder = await this.findOrder(restruantID, orderID);
           updatedOrder.status = status;
           updatedOrder.save();

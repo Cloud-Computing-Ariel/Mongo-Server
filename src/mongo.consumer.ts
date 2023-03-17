@@ -38,6 +38,9 @@ export class MongoConsumer implements OnModuleInit {
             const restID = Number.parseInt(myArray[0].toString());
             const orderID = Number.parseInt(myArray[1].toString());
             const status = myArray[2].toString();
+            console.log(restID)
+            console.log(orderID)
+            console.log(status)
 
             this.orderService.updateOrderStatus(restID, orderID, status);
           } else if (topic == 'new-order') {
