@@ -32,9 +32,25 @@ export class AppController {
     @Query('start') start: string,
     @Query('end') end: string)
     {
-      return await this.orderService.getOrderBetween(
+      const orders = await this.orderService.getOrderBetween(
         new Date(start),
         new Date(end));
+      return { orders }
     }
     // example for query: http://localhost:3000/order?start=2020-03-30&end=2020-03-30
+    
+  @Get('exportOrders')
+  async exportOrders(
+    @Query('start') start: string,
+    @Query('end') end: string
+    ) {
+    const orders = await this.orderService.getOrderBetween(
+        new Date(start),
+        new Date(end));
+        // add export logic
+        // return a message that said export successfully
+    return { orders }
+  }
 }
+  // example for query: http://localhost:3000/exportOrders?start=2020-03-30&end=2020-03-30
+      

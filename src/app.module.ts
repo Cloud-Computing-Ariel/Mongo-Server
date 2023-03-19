@@ -15,6 +15,9 @@ import { MongoConsumer } from './kafka/mongo.consumer';
       "mongodb+srv://username1:username1_pass@pizza-simulator.kpeolsc.mongodb.net/pizza-orders-DB?retryWrites=true&w=majority")
     ],
   controllers: [AppController],
-  providers: [AppService, MongoConsumer],
+  providers: [
+    AppService, 
+    MongoConsumer
+  ],
 })
 export class AppModule {}
