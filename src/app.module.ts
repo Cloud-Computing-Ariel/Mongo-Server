@@ -10,7 +10,7 @@ import { OrderSchema } from './orders/order.model';
 @Module({
   imports: [
     // KafkaModule,
-    MongooseModule.forFeature([{ name: 'newOrders', schema: OrderSchema }]),
+    MongooseModule.forFeature([{ name: 'test', schema: OrderSchema }]),
     MongooseModule.forRoot(
       "mongodb+srv://username1:username1_pass@pizza-simulator.kpeolsc.mongodb.net/pizza-orders-DB?retryWrites=true&w=majority")
     ],

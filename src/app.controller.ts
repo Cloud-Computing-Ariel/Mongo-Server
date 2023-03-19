@@ -37,7 +37,7 @@ export class AppController {
         new Date(end));
       return { orders }
     }
-    // example for query: http://localhost:3000/order?start=2020-03-30&end=2020-03-30
+    // example for query: http://localhost:3004/?from=2023-03-16&to=2023-03-18
     
 }
       
