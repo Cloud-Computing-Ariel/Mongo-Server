@@ -80,6 +80,7 @@ export class AppService {
     const endString = `${year}/${month}/${day}`;
 
     console.log('Get orders between:', startString, ' to ', endString );
+    console.log(result);
     return result; // { start: start, end: end };
   }
 
