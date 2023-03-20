@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 @Injectable()
 export class AppService {
   constructor(
-    @InjectModel('test') 
+    @InjectModel('tests') 
     private readonly orderModel: Model<Order>) {};
 
   async insertOrder(
